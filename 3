@@ -1,0 +1,71 @@
+<!---------------------------
+SOLUTION FOR QUESTION 3
+User Registration + Login with Validations and Disabled Submit
+---------------------------->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Form Validation</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .form-group { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Register</h2>
+    <div>
+        <div class="form-group">
+            <label>Name:</label>
+            <input type="text" id="regName" oninput="validateRegistration()">
+        </div>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" id="regEmail" oninput="validateRegistration()">
+        </div>
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" id="regPassword" oninput="validateRegistration()">
+        </div>
+        <button id="registerBtn" disabled onclick="registerUser()">Register</button>
+    </div>
+
+    <h2>Login</h2>
+    <div>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" id="loginEmail" oninput="validateLogin()">
+        </div>
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" id="loginPassword" oninput="validateLogin()">
+        </div>
+        <button id="loginBtn" disabled onclick="loginUser()">Login</button>
+    </div>
+
+    <script>
+        function validateRegistration() {
+            let name = document.getElementById("regName").value.trim();
+            let email = document.getElementById("regEmail").value.trim();
+            let password = document.getElementById("regPassword").value.trim();
+            let valid = name !== "" && email.includes("@") && password.length >= 5;
+            document.getElementById("registerBtn").disabled = !valid;
+        }
+
+        function validateLogin() {
+            let email = document.getElementById("loginEmail").value.trim();
+            let password = document.getElementById("loginPassword").value.trim();
+            let valid = email.includes("@") && password.length >= 5;
+            document.getElementById("loginBtn").disabled = !valid;
+        }
+
+        function registerUser() {
+            alert("Registration successful!");
+        }
+
+        function loginUser() {
+            alert("Login successful!");
+        }
+    </script>
+</body>
+</html>
