@@ -1,0 +1,106 @@
+<!---------------------------
+SOLUTION FOR QUESTION 2
+User Registration + Login with Show/Hide Password + Default Values Storage
+---------------------------->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration and Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .form-group { margin-bottom: 10px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <h2>User Registration</h2>
+    <div id="registerDiv">
+        <div class="form-group">
+            <label>Name:</label>
+            <input type="text" id="regName">
+        </div>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" id="regEmail">
+        </div>
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" id="regPassword">
+            <input type="checkbox" id="togglePassword"> Show Password
+        </div>
+        <button onclick="registerUser()">Register</button>
+    </div>
+
+    <h2>User Login</h2>
+    <div id="loginDiv">
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" id="loginEmail">
+        </div>
+        <div class="form-group">
+            <label>Password:</label>
+            <input type="password" id="loginPassword">
+        </div>
+        <button onclick="loginUser()">Login</button>
+    </div>
+
+    <div id="welcomeMsg" class="hidden"></div>
+
+    <script>
+        // Default values
+        const defaultEmail = "user@example.com";
+        const defaultPassword = "12345";
+
+        // Toggle show/hide password
+        document.getElementById("togglePassword").addEventListener("click", function() {
+            const passwordInput = document.getElementById("regPassword");
+            passwordInput.type = this.checked ? "text" : "password";
+        });
+
+        // Registration function
+        function registerUser() {
+            const name = document.getElementById("regName").value;
+            const email = document.getElementById("regEmail").value;
+            const password = document.getElementById("regPassword").value;
+
+            if (!name || !email || !password) {
+                alert("All fields are required!");
+                return;
+            }
+
+            const user = { name, email, password };
+            localStorage.setItem("user", JSON.stringify(user));
+            alert("Registration Successful!");
+        }
+
+        // Login function
+        function loginUser() {
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+            const savedUser = JSON.parse(localStorage.getItem("user"));
+
+            if ((savedUser && savedUser.email === email && savedUser.password === password) || (email === defaultEmail && password === defaultPassword)) {
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("loggedInUser", savedUser ? savedUser.name : "Default User");
+                displayWelcome(localStorage.getItem("loggedInUser"));
+            } else {
+                alert("Invalid Username or Password");
+            }
+        }
+
+        function displayWelcome(name) {
+            document.getElementById("welcomeMsg").innerHTML = `Welcome, ${name}`;
+            document.getElementById("welcomeMsg").classList.remove("hidden");
+            document.getElementById("registerDiv").classList.add("hidden");
+            document.getElementById("loginDiv").classList.add("hidden");
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem("isLoggedIn") === "true") {
+                displayWelcome(localStorage.getItem("loggedInUser"));
+            }
+        };
+    </script>
+</body>
+</html>
