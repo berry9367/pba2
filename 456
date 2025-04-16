@@ -1,0 +1,180 @@
+**Question 4:** (Product Page + Cart using HTML, CSS & JavaScript)
+
+**index.html**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Our Products</h1>
+    <div id="products"></div>
+
+    <div class="cart">
+        Cart Items: <span id="cart-count">0</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+```
+
+**style.css**
+```css
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+.product {
+    border: 1px solid #ccc;
+    display: inline-block;
+    width: 200px;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+}
+.cart {
+    margin-top: 20px;
+    font-weight: bold;
+}
+```
+
+**script.js**
+```javascript
+const products = [
+    { id: 1, name: 'Laptop', desc: 'High-performance laptop', price: 900 },
+    { id: 2, name: 'Headphones', desc: 'Noise-cancelling', price: 150 },
+    { id: 3, name: 'Smartwatch', desc: 'Fitness tracking', price: 120 },
+    { id: 4, name: 'Smartphone', desc: 'Latest model', price: 700 },
+    { id: 5, name: 'Tablet', desc: 'Portable and sleek', price: 300 },
+    { id: 6, name: 'Camera', desc: 'DSLR professional', price: 500 }
+];
+
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+updateCartCount();
+
+const container = document.getElementById('products');
+products.forEach(p => {
+    const div = document.createElement('div');
+    div.classList.add('product');
+    div.innerHTML = `
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <p>Price: $${p.price}</p>
+        <button onclick="addToCart(${p.id})">Add to Cart</button>
+    `;
+    container.appendChild(div);
+});
+
+function addToCart(id) {
+    const item = products.find(p => p.id === id);
+    cart.push(item);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+}
+
+function updateCartCount() {
+    document.getElementById('cart-count').innerText = cart.length;
+}
+```
+
+---
+
+**Question 5:** (User Registration using HTML, JavaScript, PHP)
+
+**register.html**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h2>Register</h2>
+    <form action="register.php" method="POST" oninput="validate()">
+        Name: <input type="text" name="name" id="name" required><br><br>
+        Email: <input type="email" name="email" id="email" required><br><br>
+        Password: <input type="password" name="password" id="password" required><br><br>
+        <button id="registerBtn" type="submit" disabled>Register</button>
+    </form>
+
+    <script>
+    function validate() {
+        let name = document.getElementById("name").value.trim();
+        let email = document.getElementById("email").value.trim();
+        let pass = document.getElementById("password").value.trim();
+        document.getElementById("registerBtn").disabled = !(name && email && pass);
+    }
+    </script>
+</body>
+</html>
+```
+
+**register.php**
+```php
+<?php
+if (!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['password'])) {
+    $name = htmlspecialchars($_POST['name']);
+    $email = htmlspecialchars($_POST['email']);
+    $password = htmlspecialchars($_POST['password']);
+
+    echo "<h2>Registration Successful!</h2>";
+    echo "<p>Name: $name</p>";
+    echo "<p>Email: $email</p>";
+} else {
+    echo "<h2>Error: All fields are required!</h2>";
+}
+?>
+```
+
+---
+
+**Question 6:** (User Login using HTML, JavaScript, PHP)
+
+**login.html**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form action="login.php" method="POST" oninput="validate()">
+        Username: <input type="text" name="username" id="username" required><br><br>
+        Password: <input type="password" name="password" id="password" required><br><br>
+        <button id="loginBtn" type="submit" disabled>Login</button>
+    </form>
+
+    <script>
+    function validate() {
+        let username = document.getElementById("username").value.trim();
+        let password = document.getElementById("password").value.trim();
+        document.getElementById("loginBtn").disabled = !(username && password);
+    }
+    </script>
+</body>
+</html>
+```
+
+**login.php**
+```php
+<?php
+if (!empty($_POST['username']) && !empty($_POST['password'])) {
+    $username = htmlspecialchars($_POST['username']);
+    $password = htmlspecialchars($_POST['password']);
+
+    echo "<h2>Login Successful!</h2>";
+    echo "<p>Username: $username</p>";
+} else {
+    echo "<h2>Login Failed: Invalid Username or Password!</h2>";
+}
+?>
